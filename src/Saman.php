@@ -5,17 +5,22 @@
 
 namespace SadeghPM\SamanBank;
 
+use SadeghPM\SamanBank\Exception\SamanPayDoubleSpendingException;
+use SadeghPM\SamanBank\Exception\SamanPayEmptyResponseException;
+use SadeghPM\SamanBank\Exception\SamanPayException;
+use SadeghPM\SamanBank\Exception\SamanPayVerifyException;
+
 class Saman
 {
     const SAMAN_WSDL_URL = 'https://acquirer.samanepay.com/payments/referencepayment.asmx?WSDL';
     const SAMAN_SHAPARAK_PAGE_URL = 'https://sep.shaparak.ir/Payment.aspx';
     public $payParams = [];
     /**
-     * @var SamanStorageAdapter
+     * @var SamanStorageAdapterInterface
      */
     private $storageAdapter;
 
-    public function __construct(SamanStorageAdapter $storageAdapter, int $merchantId)
+    public function __construct(SamanStorageAdapterInterface $storageAdapter, int $merchantId)
     {
         $this->payParams['MID'] = $merchantId;
         $this->storageAdapter = $storageAdapter;

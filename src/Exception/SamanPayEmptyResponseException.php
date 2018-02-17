@@ -1,5 +1,5 @@
 <?php
-namespace SadeghPM\SamanBank;
+namespace SadeghPM\SamanBank\Exception;
 /**
  * SamanPayEmptyResponseException 
  */

@@ -2,7 +2,7 @@
 
 namespace SadeghPM\SamanBank;
 
-interface SamanStorageAdapter
+interface SamanStorageAdapterInterface
 {
 
     /**
