@@ -70,9 +70,8 @@ class Saman
     /**
      * check payment status
      *
-     *
      * @param array $transactionResponse transaction callback data via post method
-     * @return array
+     * @return true
      * @throws SamanPayDoubleSpendingException if pay double spending
      * @throws SamanPayEmptyResponseException if empty callback data entered
      * @throws SamanPayException any pay error from saman bank
@@ -93,7 +92,7 @@ class Saman
             $verify_state = $this->verify($transactionResponse['RefNum']);
             if ($verify_state > 0) {
                 $this->storageAdapter->logSuccessfulPay($transactionResponse['ResNum'], $transactionResponse['RefNum'], $transactionResponse['State'], (int)$transactionResponse['StateCode']);
-                return $transactionResponse;
+                return true;
             } else {
                 $this->storageAdapter->logErrorPay($transactionResponse['ResNum'], $transactionResponse['RefNum'], $transactionResponse['State'], $verify_state);
                 throw new SamanPayVerifyException($verify_state);
@@ -104,7 +103,7 @@ class Saman
         }
     }
 
-    public function isEmptyResponse(array $post = [])
+    private function isEmptyResponse(array $post = [])
     {
         return empty($post) or empty($post['ResNum']);
     }
@@ -114,7 +113,7 @@ class Saman
      * @return int
      * @throws \Exception if no soap extension installed
      */
-    public function verify($RefNum): int
+    private function verify($RefNum): int
     {
         if (!extension_loaded('soap')) {
             throw new  \Exception("No Soap extension installed!", 1);
